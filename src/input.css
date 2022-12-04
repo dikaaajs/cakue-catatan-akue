@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* root setting */
+* {
+    @apply font-poppins
+}
+.paragraf {
+    @apply font-roboto font-[300]
+}
+
+/* body section */
+/* body have 2 section : dashboard and log */
+
+/* dashboard section */
+/* dashboard have 2 section : search section and main content */
+.dashboard {
+    @apply flex flex-col md:flex-row px-[10px] md:px-[100px] py-[50px] gap-[50px] box-border bg-[#edf1f5]
+}
+
+.active-filter-button {
+    @apply text-blue-400
+}
+
+/* search section */
+.container-note {
+    @apply w-full md:w-2/3 flex flex-col gap-[1.5rem]
+}
+
+.container-filter {
+    @apply mb-[30px] flex gap-[15px] flex-col md:flex-row items-center h-[24px] relative
+}
+
+.search-section {
+    @apply md:w-2/3 w-full
+}
+
+.ascending-section {
+    @apply w-full md:w-1/3 flex justify-end items-center h-[24px] gap-[10px]
+}
+
+.filter-1 {
+    @apply w-fit h-full flex items-center
+}
+
+.filter-2 {
+    @apply h-[85%] text-right w-fit
+}
+
+.card-note {
+    @apply w-full rounded-[5px] px-[15px] py-[30px] bg-white text-left
+}
+
+/* log section */
+.log {
+    @apply w-full md:w-1/3 h-fit flex flex-col gap-[10px] py-[20px] px-[15px] bg-white rounded-[5px] relative pt-[50px]
+}
+
+.card-log {
+    @apply border-b-[2px] border-black border-dashed border-opacity-50 py-[0.7rem]
+}
+
+.header-log {
+    @apply px-[8px] py-[10px] md:py-[15px] md:px-[13px] bg-slate-800 w-1/2 skew-y-3 text-white absolute top-[-25px]
+}
+
+/* signup and signin section */
+.form-account {
+    @apply flex flex-col gap-[20px] py-[20px]
+}
+
+.container-label-account {
+    @apply w-[80%] block mx-auto
+}
+
+.input-account {
+    @apply border-[1px] border-black border-opacity-60 border-solid w-full h-[1rem] rounded-[3px] text-[0.5rem]
+}
+
+.submit-btn {
+    @apply py-[7px] px-[10px] bg-slate-800 text-white rounded-[5px] block mx-auto w-fit text-[0.8rem]
+}
+
