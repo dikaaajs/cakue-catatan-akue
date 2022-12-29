@@ -1,13 +1,9 @@
 import React, { useState, useRef } from "react";
 
 // firebase auth
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-function SignUp() {
+function ResetPass() {
   const [state, setState] = useState();
   const [message, setMessage] = useState(null);
   const auth = getAuth();
@@ -42,29 +38,21 @@ function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (state.password < 8) {
-      handlePopup("password harus lebih dari 8 karakter");
-    } else {
-      createUserWithEmailAndPassword(auth, state.email, state.password)
-        .then(() => {
-          sendEmailVerification(auth.currentUser)
-            .then(() => {
-              console.log("send verification");
-              handlePopup(
-                "akun kamu udah beres dibuat gan. sekarang kamu tinggal verifikasi emailnya. note: mungkin aja email verifikasinya dikirim sebagai email spam"
-              );
-            })
-            .catch((err) => err.message);
-        })
-        .catch((err) => {
-          handlePopup(err.message, { bg: "red" });
-        });
-    }
+    signInWithEmailAndPassword(auth, state.email, state.password)
+      .then((response) => {
+        if (!response.user.emailVerified) {
+          console.log("email telah rerverifikasi");
+        }
+        console.log(response.user.emailVerified);
+      })
+      .catch((err) => {
+        handlePopup(err.message, "error");
+      });
   };
 
   return (
-    <section className="w-full bg-loginAndSignUp h-screen flex items-center">
-      <div className="w-[80%] md:w-[30%] lg:[20%] mx-auto flex flex-col gap-[30px] bg-white rounded-[9px] h-fit">
+    <section className="w-full bg-loginAndSignUp py-[100px]">
+      <div className="w-[95%] md:w-[30%] lg:[20%] mx-auto flex flex-col gap-[30px] bg-white rounded-[9px]">
         <div>
           <div className="py-[30px]">
             <div className="w-full">
@@ -75,7 +63,7 @@ function SignUp() {
           </div>
 
           {/* form section */}
-          <form className="form-account" onSubmit={(e) => handleSubmit(e)}>
+          <form className="form-account" onSubmit={handleSubmit}>
             <div className="container-label-account">
               <label className="text-[0.8rem]">email :</label>
               <input
@@ -83,17 +71,6 @@ function SignUp() {
                 type="email"
                 className="input-account focus:!border-blue-400"
                 onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="container-label-account">
-              <label className="text-[0.8rem]">password :</label>
-              <input
-                name="password"
-                type="password"
-                className="input-account focus:!border-blue-400"
-                onChange={handleChange}
-                required
               />
             </div>
             <div className="submit-btn">
@@ -103,8 +80,14 @@ function SignUp() {
 
           <div className="no-have-account w-full text-[0.8rem] flex flex-col gap-[5px] text-center py-[15px]">
             <p className="">
-              sudah punya akun ? login{" "}
-              <a href="/account/login" className="text-blue-400">
+              tidak punya akun ? buat akun{" "}
+              <a href="/account/signUp" className="text-blue-400">
+                disini
+              </a>
+            </p>
+            <p className="">
+              lupa password ? reset password{" "}
+              <a href="/account/resetPass" className="text-blue-400">
                 disini
               </a>
             </p>
@@ -112,7 +95,7 @@ function SignUp() {
         </div>
       </div>
 
-      {/* pop up */}
+      {/* pesan error */}
       <div
         className="berhasil-buat-akun absolute w-[90%] md:w-[50%] bg-green-500 text-white shadow-lg rounded-[9px] left-[50%] -translate-x-[10%] py-[30px] px-[20px] top-[50px] opacity-0 duration-300 transition"
         ref={popup}
@@ -131,4 +114,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default ResetPass;

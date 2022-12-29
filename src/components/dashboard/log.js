@@ -1,31 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getPapers } from "../../utils/handlePaper";
 
 const Log = () => {
-  return (
-    <div className="log">
-      {/* judul section */}
-      <div className="header-log">
-        <p className="z-10">
-          <span className="material-symbols-outlined">history</span>
-          log aktivitas
-        </p>
-      </div>
+  const [dataLogs, setLogs] = useState([]);
 
-      {/* card section */}
-      <div className="card-log">
-        <p className="paragraf">membuat catatan materi biologi</p>
-        <p>10.58</p>
+  useEffect(() => {
+    getPapers()
+      .then((response) => {
+        setLogs(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [dataLogs]);
+
+  const componentLogs = dataLogs.map((dataLog) => {
+    return (
+      <div className="card-log" key={dataLog.id}>
+        <p className="paragraf font-[400]">
+          membuat catatan{" "}
+          <span className="text-red-600 font-[600]">"{dataLog.header}"</span>
+        </p>
+        <p>{dataLog.updateAt}</p>
       </div>
-      <div className="card-log">
-        <p className="paragraf">membuat catatan materi biologi</p>
-        <p>10.58</p>
-      </div>
-      <div className="card-log">
-        <p className="paragraf">membuat catatan materi biologi</p>
-        <p>10.58</p>
-      </div>
-    </div>
-  );
+    );
+  });
+
+  return <>{componentLogs}</>;
 };
 
 export default Log;

@@ -82,3 +82,8 @@
     @apply py-[7px] px-[10px] bg-slate-800 text-white rounded-[5px] block mx-auto w-fit text-[0.8rem]
 }
 
+/* create note section */
+.input-note {
+    @apply focus:outline-none
+}
+
