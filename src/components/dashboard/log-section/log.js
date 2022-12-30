@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getPapers } from "../../utils/handlePaper";
+import { getPapers } from "../../../utils/handlePaper";
 
 const Log = () => {
   const [dataLogs, setLogs] = useState([]);

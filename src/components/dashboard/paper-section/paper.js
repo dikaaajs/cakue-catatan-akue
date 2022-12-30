@@ -1,7 +1,9 @@
 import React from "react";
 
 const Paper = () => {
-  return <div></div>;
+  return <div>
+    halaman unik id
+  </div>;
 };
 
 export default Paper;

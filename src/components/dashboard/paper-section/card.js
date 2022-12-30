@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getPapers } from "../../utils/handlePaper";
+import { getPapers } from "../../../utils/handlePaper";
 
 const PaperCard = () => {
   const [papers, setPapers] = useState([]);

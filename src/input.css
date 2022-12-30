@@ -71,7 +71,7 @@
 }
 
 .container-label-account {
-    @apply w-[80%] block mx-auto
+    @apply w-[80%] block mx-auto flex flex-col
 }
 
 .input-account {

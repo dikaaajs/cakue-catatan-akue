@@ -2,10 +2,10 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 // component
-import CreatePaper from "../components/paper/create";
 import Dashboard from "../components/dashboard/dashboard";
-import Paper from "../components/paper/paper";
-import Update from "../components/paper/update";
+import CreatePaper from "../components/dashboard/paper-section/create";
+import Paper from "../components/dashboard/paper-section/paper"
+import Update from "../components/dashboard/paper-section/update";
 
 const DashboardRoutes = () => {
   return (

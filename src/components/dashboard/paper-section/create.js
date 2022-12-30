@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addPaper } from "../../utils/handlePaper";
+import { addPaper } from "../../../utils/handlePaper";
 
 const CreatePaper = () => {
   const [state, setState] = useState({});

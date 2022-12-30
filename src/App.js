@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // component
-import Navigasi from "./components/layout/navbar";
+import Navigasi from "./components/layout/navigasi/navbar";
 
 // firebase auth
 import { onAuthStateChanged } from "firebase/auth";

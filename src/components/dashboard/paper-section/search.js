@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ReactComponent as LogoFilter } from "../../svg/filter.svg";
+import { ReactComponent as LogoFilter } from "../../../svg/filter.svg";
 
 class SearchSection extends Component {
   render() {

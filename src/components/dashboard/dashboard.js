@@ -1,7 +1,7 @@
 import React from "react";
 // component
-import ContainerPaper from "../paper/container";
-import Log from "./logs";
+import ContainerPaper from "./paper-section/container";
+import Log from "./log-section/logs";
 
 function Dashboard() {
   return (

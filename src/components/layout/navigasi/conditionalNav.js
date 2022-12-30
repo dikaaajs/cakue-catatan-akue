@@ -1,25 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { handleLogOut } from "../../utils/handleAccount";
-import { storage } from "../../config/fbConfig";
+import { handleLogOut } from "../../../utils/handleAccount";
+import { storage } from "../../../config/fbConfig";
 import { ref, getDownloadURL } from "firebase/storage";
 
 // context
-import { TokenContext } from "../../App";
+import { TokenContext } from "../../../App";
 
 const NavAfterLogin = () => {
-  const [PP, setPP] = useState("");
+  // const [PP, setPP] = useState("");
 
-  useEffect(() => {
-    const PPRef = ref(storage, "pp/texas.jpg");
-    getDownloadURL(PPRef)
-      .then((url) => {
-        setPP(url);
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
-  }, [PP]);
+  // useEffect(() => {
+  //   const PPRef = ref(storage, "pp/texas.jpg");
+  //   getDownloadURL(PPRef)
+  //     .then((url) => {
+  //       setPP(url);
+  //     })
+  //     .catch((e) => {
+  //       console.log(e.message);
+  //     });
+  // }, [PP]);
 
   return (
     <div className="h-fit w-1/4">
@@ -30,7 +30,7 @@ const NavAfterLogin = () => {
           </span>
         </Link>
         <Link to="/" className="p-[10px] rounded-[50%] text-[1rem] w-1/5">
-          <img src={PP} alt="" />
+          <img src="" alt="" />
         </Link>
         <Link
           to="/dashboard/paper/create"
@@ -60,7 +60,4 @@ const NavBeforeLogin = () => {
   );
 };
 
-export const ConditionalNav = () => {
-  const token = useContext(TokenContext);
-  return token ? <NavAfterLogin /> : <NavBeforeLogin />;
-};
+export {NavAfterLogin, NavBeforeLogin}
