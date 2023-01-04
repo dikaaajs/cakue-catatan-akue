@@ -66,6 +66,10 @@
 }
 
 /* signup and signin section */
+.warning-text {
+    @apply text-[0.5rem] text-red-400
+}
+
 .form-account {
     @apply flex flex-col gap-[20px] py-[20px]
 }
@@ -75,7 +79,7 @@
 }
 
 .input-account {
-    @apply border-[1px] border-black border-opacity-60 border-solid w-full h-[1rem] rounded-[3px] text-[0.5rem]
+    @apply border-[1px] border-opacity-60 border-solid w-full h-[1rem] rounded-[3px] text-[0.5rem] outline-none
 }
 
 .submit-btn {
