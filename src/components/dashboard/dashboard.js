@@ -1,19 +1,15 @@
-import React, { Component } from "react";
-
+import React from "react";
 // component
-import CatatanList from "../catatan/catatanList";
-import Log from "./log";
+import ContainerPaper from "./paper-section/container";
+import Log from "./log-section/logs";
 
-class Dashboard extends Component {
-  render() {
-    return (
-      <section className="dashboard">
-        <CatatanList />
-
-        <Log />
-      </section>
-    );
-  }
+function Dashboard() {
+  return (
+    <section className="dashboard">
+      <ContainerPaper />
+      <Log />
+    </section>
+  );
 }
 
 export default Dashboard;

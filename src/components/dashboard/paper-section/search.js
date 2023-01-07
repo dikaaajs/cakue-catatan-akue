@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { ReactComponent as LogoFilter } from "../../svg/filter.svg";
+import { ReactComponent as LogoFilter } from "../../../svg/filter.svg";
 
-class CatatanCari extends Component {
+class SearchSection extends Component {
   render() {
     return (
       <section className="container-filter">
@@ -45,4 +45,4 @@ class CatatanCari extends Component {
   }
 }
 
-export default CatatanCari;
+export default SearchSection;

@@ -1,29 +1,52 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // component
-import SignIn from "./components/auth/signIn";
-import SignUp from "./components/auth/signUp";
-import CatatanCreate from "./components/catatan/catatanCreate";
-import Dashboard from "./components/dashboard/dashboard";
-import Navigasi from "./components/layout/navbar";
+import Navigasi from "./components/layout/navigasi/navbar";
 
-class App extends Component {
-  render() {
-    return (
-      <BrowserRouter>
+// firebase auth
+import { onAuthStateChanged } from "firebase/auth";
+import { firebaseAuth } from "./config/fbConfig";
+import LandingPage from "./components/home/home";
+
+// routes
+import DashboardRoutes from "./Routes/dashboardRoutes";
+import AccountRoutes from "./Routes/accountRoutes";
+import ProtecRoute from "./Routes/protecRoute";
+
+export const TokenContext = React.createContext();
+
+function App() {
+  const [token, setToken] = useState();
+
+  useEffect(() => {
+    onAuthStateChanged(firebaseAuth, (user) => {
+      const token = user?.emailVerified || "false";
+      setToken(token);
+    });
+  }, []);
+
+  return (
+    <BrowserRouter>
+      <TokenContext.Provider value={token}>
         <div className="app">
+          {/* header section */}
           <Navigasi />
+
+          {/* main section */}
           <Routes>
-            <Route exact path="/" element={<Dashboard />} />
-            <Route path="/account/login" element={<SignIn />} />
-            <Route path="/account/signup" element={<SignUp />} />
-            <Route path="/create" element={<CatatanCreate />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="account/*" element={<AccountRoutes />} />
+            <Route element={<ProtecRoute />}>
+              <Route path="/dashboard/*" element={<DashboardRoutes />} />
+            </Route>
           </Routes>
+
+          {/* footer section */}
         </div>
-      </BrowserRouter>
-    );
-  }
+      </TokenContext.Provider>
+    </BrowserRouter>
+  );
 }
 
 export default App;

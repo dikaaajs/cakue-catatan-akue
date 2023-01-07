@@ -1,15 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef } from "react";
 
 // firebase auth
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-function SignIn() {
+function ResetPass() {
   const [state, setState] = useState();
   const [message, setMessage] = useState(null);
   const auth = getAuth();
   const popup = useRef();
-  const navigate = useNavigate();
 
   const hiddenPopup = () => {
     popup.current.classList.remove("-translate-x-[50%]");
@@ -37,19 +35,17 @@ function SignIn() {
       ...newState,
     });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
     signInWithEmailAndPassword(auth, state.email, state.password)
       .then((response) => {
-        if (response.user.emailVerified) {
-          navigate("/dashboard", { replace: true });
-        } else {
-          alert("verifikasi email terlebih dahulu");
+        if (!response.user.emailVerified) {
+          console.log("email telah rerverifikasi");
         }
+        console.log(response.user.emailVerified);
       })
       .catch((err) => {
-        console.log("error");
         handlePopup(err.message, "error");
       });
   };
@@ -74,15 +70,6 @@ function SignIn() {
                 name="email"
                 type="email"
                 className="input-account focus:!border-blue-400"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="container-label-account">
-              <label className="text-[0.8rem]">password :</label>
-              <input
-                name="password"
-                type="password"
-                className="input-account"
                 onChange={handleChange}
               />
             </div>
@@ -119,7 +106,7 @@ function SignIn() {
             className="absolute right-0 top-[-20px] cursor-pointer"
             onClick={hiddenPopup}
           >
-            <span className="material-symbols-outlined">close</span>
+            <span class="material-symbols-outlined">close</span>
           </div>
         </div>
       </div>
@@ -127,4 +114,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default ResetPass;
