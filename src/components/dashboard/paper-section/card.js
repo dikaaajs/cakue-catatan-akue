@@ -1,18 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { getPapers } from "../../../utils/handlePaper";
+import React, { useState, useEffect, useContext } from "react";
+import { TokenContext } from "../../../App";
 
 const PaperCard = () => {
   const [papers, setPapers] = useState([]);
-
-  useEffect(() => {
-    getPapers()
-      .then((response) => {
-        setPapers(response);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [papers]);
+  const user = useContext(TokenContext);
 
   // handle event
   const handleClick = (e) => {

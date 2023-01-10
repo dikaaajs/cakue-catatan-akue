@@ -5,8 +5,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigasi from "./components/layout/navigasi/navbar";
 
 // firebase auth
-import { onAuthStateChanged } from "firebase/auth";
-import { firebaseAuth } from "./config/fbConfig";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+
+import { db, firebaseAuth } from "./config/fbConfig";
+
 import LandingPage from "./components/home/home";
 
 // routes
@@ -17,18 +20,34 @@ import ProtecRoute from "./Routes/protecRoute";
 export const TokenContext = React.createContext();
 
 function App() {
-  const [token, setToken] = useState();
+  const [user, setUser] = useState(null);
+
+  const auth = getAuth();
+
+  const refreshUser = () => {
+    onAuthStateChanged(firebaseAuth, (user) => {
+      const docRef = doc(db, "users", auth.currentUser.uid);
+      getDoc(docRef).then((res) => {
+        if (res.exists()) {
+          console.log(res.data());
+          setUser(res.data());
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      });
+    });
+  };
 
   useEffect(() => {
-    onAuthStateChanged(firebaseAuth, (user) => {
-      const token = user?.emailVerified || "false";
-      setToken(token);
-    });
+    refreshUser();
   }, []);
+
+  console.log(user);
 
   return (
     <BrowserRouter>
-      <TokenContext.Provider value={token}>
+      <TokenContext.Provider value={user}>
         <div className="app">
           {/* header section */}
           <Navigasi />

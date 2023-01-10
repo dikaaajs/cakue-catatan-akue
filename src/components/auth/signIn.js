@@ -4,31 +4,17 @@ import { useNavigate } from "react-router-dom";
 // firebase auth
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
+// custom function for DOM
+import { handlePopup, popupHidden } from "./popupHandle";
+
 function SignIn() {
   const [state, setState] = useState();
-  const [message, setMessage] = useState(null);
   const auth = getAuth();
-  const popup = useRef();
   const navigate = useNavigate();
 
-  const hiddenPopup = () => {
-    popup.current.classList.remove("-translate-x-[50%]");
-    popup.current.classList.remove("opacity-100");
-    popup.current.classList.add("opacity-0");
-    popup.current.classList.add("-translate-x-[10%]");
-  };
-
-  const handlePopup = (message, status) => {
-    setMessage(message);
-    popup.current.classList.remove("opacity-0");
-    popup.current.classList.remove("-translate-x-[10%]");
-    popup.current.classList.add("-translate-x-[50%]");
-    popup.current.classList.add("opacity-100");
-    if (status) {
-      popup.current.classList.remove("bg-green-500");
-      popup.current.classList.add("bg-red-500");
-    }
-  };
+  //  ref DOM
+  const popupDOM = useRef();
+  const messageDOM = useRef();
 
   const handleChange = (e) => {
     const newState = { [e.target.name]: e.target.value };
@@ -39,19 +25,17 @@ function SignIn() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(navigate);
+    navigate("/dashboard");
 
-    signInWithEmailAndPassword(auth, state.email, state.password)
-      .then((response) => {
-        if (response.user.emailVerified) {
-          navigate("/dashboard", { replace: true });
-        } else {
-          alert("verifikasi email terlebih dahulu");
-        }
-      })
-      .catch((err) => {
-        console.log("error");
-        handlePopup(err.message, "error");
-      });
+    // signInWithEmailAndPassword(auth, state.email, state.password)
+    //   .then(() => {
+    //     console.log("berhasil");
+    //     navigate("/dashboard", { replace: true });
+    //   })
+    //   .catch((err) => {
+    //     handlePopup(true, err.message, popupDOM, messageDOM);
+    //   });
   };
 
   return (
@@ -111,13 +95,15 @@ function SignIn() {
       {/* pesan error */}
       <div
         className="berhasil-buat-akun absolute w-[90%] md:w-[50%] bg-green-500 text-white shadow-lg rounded-[9px] left-[50%] -translate-x-[10%] py-[30px] px-[20px] top-[50px] opacity-0 duration-300 transition"
-        ref={popup}
+        ref={popupDOM}
       >
         <div className="relative w-full h-full">
-          <p>{message}</p>
+          <p ref={messageDOM}></p>
           <div
             className="absolute right-0 top-[-20px] cursor-pointer"
-            onClick={hiddenPopup}
+            onClick={() => {
+              popupHidden(popupDOM);
+            }}
           >
             <span className="material-symbols-outlined">close</span>
           </div>

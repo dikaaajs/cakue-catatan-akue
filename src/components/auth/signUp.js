@@ -1,15 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 
 // firebase
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from "firebase/auth";
-import { firebaseAuth } from "../../config/fbConfig";
-
-// custom function for dom
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { handlePopup, popupHidden } from "./popupHandle";
+import { db } from "../../config/fbConfig";
+import { async } from "@firebase/util";
 
 // main content
 function SignUp() {
@@ -20,11 +16,13 @@ function SignUp() {
     password: "",
   });
   const auth = getAuth();
+
+  // ref DOM
   const usernameDOM = useRef();
   const passwordDOM = useRef();
   const submitButton = useRef();
-
-  console.log(auth);
+  const popupDOM = useRef();
+  const messageDOM = useRef();
 
   // fungsi untuk menghandle warning pada input
   useEffect(() => {
@@ -107,7 +105,6 @@ function SignUp() {
     const name = e.target.name;
     const value = e.target.value;
 
-    // check on input username
     if (name === "displayName") {
       const regex = new RegExp(/^[^\W_]{5,15}$/);
       const checkUsername = regex.test(value);
@@ -123,7 +120,6 @@ function SignUp() {
       }
     }
 
-    // check on input password
     if (name === "password") {
       const regexExp = new RegExp(/^[^\W_]{5,15}$/);
       const checkPassword = regexExp.test(value);
@@ -139,7 +135,7 @@ function SignUp() {
       }
     }
 
-    const newState = { name: value };
+    const newState = { [name]: value };
     setState({
       ...state,
       ...newState,
@@ -148,22 +144,34 @@ function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // auth user and store data to firestore
-    // if (
-    //   warningInput.username.length !== 0 ||
-    //   warningInput.password.length !== 0
-    // ) {
-    //   handlePopup(true, "cek dulu inputnya gan. barangkali ada yang salah");
-    // } else {
-
-    // }
 
     createUserWithEmailAndPassword(auth, state.email, state.password)
       .then(() => {
-        console.log("akun berhasil dibuat");
+        auth.currentUser.displayName = usernameDOM.current.value;
+        const docRef = doc(db, "users", auth.currentUser.uid);
+        const data = {
+          username: auth.currentUser.displayName,
+          email: auth.currentUser.email,
+          paper: [
+            {
+              judul: "initial paper",
+              content:
+                "hi selamat datang di cakue. nikmatilah fitur fitur yang telah dibangun oleh saya",
+            },
+          ],
+        };
+
+        setDoc(docRef, data);
+
+        handlePopup(
+          false,
+          "berhasil membuat akun, silahkan login !",
+          popupDOM,
+          messageDOM
+        );
       })
       .catch((err) => {
-        console.log(err.message);
+        handlePopup(true, err.message, popupDOM, messageDOM);
       });
   };
 
@@ -239,8 +247,8 @@ function SignUp() {
         className="berhasil-buat-akun absolute w-[90%] md:w-[50%] bg-green-500 text-white shadow-lg rounded-[9px] left-[50%] -translate-x-[10%] py-[30px] px-[20px] top-[50px] opacity-0 duration-300 transition"
         id="popupAuth"
       >
-        <div className="relative w-full h-full">
-          <p id="message"></p>
+        <div className="relative w-full h-full" ref={popupDOM}>
+          <p id="message" ref={messageDOM}></p>
           <div
             className="absolute right-0 top-[-20px] cursor-pointer"
             onClick={popupHidden}
