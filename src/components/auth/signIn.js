@@ -26,16 +26,15 @@ function SignIn() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(navigate);
-    navigate("/dashboard");
 
-    // signInWithEmailAndPassword(auth, state.email, state.password)
-    //   .then(() => {
-    //     console.log("berhasil");
-    //     navigate("/dashboard", { replace: true });
-    //   })
-    //   .catch((err) => {
-    //     handlePopup(true, err.message, popupDOM, messageDOM);
-    //   });
+    signInWithEmailAndPassword(auth, state.email, state.password)
+      .then(() => {
+        console.log("berhasil");
+        navigate("/dashboard", { replace: true });
+      })
+      .catch((err) => {
+        handlePopup(true, err.message, popupDOM, messageDOM);
+      });
   };
 
   return (
