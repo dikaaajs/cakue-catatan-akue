@@ -80,6 +80,7 @@
 
 .input-account {
     @apply border-[1px] border-opacity-60 border-gray-900 border-solid w-full h-[1rem] rounded-[3px] text-[0.5rem] outline-none
+
 }
 
 .submit-btn {

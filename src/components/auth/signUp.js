@@ -16,6 +16,8 @@ function SignUp() {
     password: "",
   });
   const auth = getAuth();
+  const username = useRef();
+  const password = useRef();
 
   // ref DOM
   const usernameDOM = useRef();
@@ -136,6 +138,7 @@ function SignUp() {
     }
 
     const newState = { [name]: value };
+
     setState({
       ...state,
       ...newState,
@@ -220,7 +223,6 @@ function SignUp() {
                 name="password"
                 type="password"
                 className="input-account"
-                ref={passwordDOM}
                 required
               />
             </div>
@@ -249,6 +251,7 @@ function SignUp() {
       >
         <div className="relative w-full h-full" ref={popupDOM}>
           <p id="message" ref={messageDOM}></p>
+
           <div
             className="absolute right-0 top-[-20px] cursor-pointer"
             onClick={popupHidden}
