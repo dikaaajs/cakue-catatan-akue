@@ -82,6 +82,7 @@ function SignUp() {
 
   // handle jika ada warning di password
   function passwordWarningDOM(message, isWarning) {
+    console.log(passwordDOM);
     // jika ada error
     if (isWarning) {
       const passwordTextWarning = document.createElement("p");
@@ -148,34 +149,36 @@ function SignUp() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    createUserWithEmailAndPassword(auth, state.email, state.password)
-      .then(() => {
-        auth.currentUser.displayName = usernameDOM.current.value;
-        const docRef = doc(db, "users", auth.currentUser.uid);
-        const data = {
-          username: auth.currentUser.displayName,
-          email: auth.currentUser.email,
-          paper: [
-            {
-              judul: "initial paper",
-              content:
-                "hi selamat datang di cakue. nikmatilah fitur fitur yang telah dibangun oleh saya",
-            },
-          ],
-        };
+    // createUserWithEmailAndPassword(auth, state.email, state.password)
+    //   .then(() => {
+    //     auth.currentUser.displayName = usernameDOM.current.value;
+    //     const docRef = doc(db, "users", auth.currentUser.uid);
+    //     const data = {
+    //       username: auth.currentUser.displayName,
+    //       email: auth.currentUser.email,
+    //       paper: [
+    //         {
+    //           judul: "initial paper",
+    //           content:
+    //             "hi selamat datang di cakue. nikmatilah fitur fitur yang telah dibangun oleh saya",
+    //         },
+    //       ],
+    //     };
 
-        setDoc(docRef, data);
+    //     setDoc(docRef, data);
 
-        handlePopup(
-          false,
-          "berhasil membuat akun, silahkan login !",
-          popupDOM,
-          messageDOM
-        );
-      })
-      .catch((err) => {
-        handlePopup(true, err.message, popupDOM, messageDOM);
-      });
+    //     handlePopup(
+    //       false,
+    //       "berhasil membuat akun, silahkan login !",
+    //       popupDOM,
+    //       messageDOM
+    //     );
+    //   })
+    //   .catch((err) => {
+    //     handlePopup(true, err.message, popupDOM, messageDOM);
+    //   });
+
+    handlePopup(false, "ini pesan", popupDOM, messageDOM);
   };
 
   return (
@@ -223,6 +226,7 @@ function SignUp() {
                 name="password"
                 type="password"
                 className="input-account"
+                ref={passwordDOM}
                 required
               />
             </div>
@@ -248,13 +252,14 @@ function SignUp() {
       <div
         className="berhasil-buat-akun absolute w-[90%] md:w-[50%] bg-green-500 text-white shadow-lg rounded-[9px] left-[50%] -translate-x-[10%] py-[30px] px-[20px] top-[50px] opacity-0 duration-300 transition"
         id="popupAuth"
+        ref={popupDOM}
       >
-        <div className="relative w-full h-full" ref={popupDOM}>
+        <div className="relative w-full h-full">
           <p id="message" ref={messageDOM}></p>
 
           <div
             className="absolute right-0 top-[-20px] cursor-pointer"
-            onClick={popupHidden}
+            onClick={() => popupHidden(popupDOM)}
           >
             <span className="material-symbols-outlined">close</span>
           </div>

@@ -624,10 +624,6 @@ video {
   display: none;
 }
 
-.\!hidden {
-  display: none !important;
-}
-
 .h-full {
   height: 100%;
 }
@@ -700,7 +696,6 @@ video {
 
 .cursor-not-allowed {
   cursor: not-allowed;
-
 }
 
 .flex-col {
@@ -765,16 +760,6 @@ video {
 
 .border-solid {
   border-style: solid;
-}
-
-.\!border-red-500 {
-  --tw-border-opacity: 1 !important;
-  border-color: rgb(239 68 68 / var(--tw-border-opacity)) !important;
-}
-
-.border-slate-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(100 116 139 / var(--tw-border-opacity));
 }
 
 .border-slate-800 {
