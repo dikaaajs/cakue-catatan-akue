@@ -15,39 +15,38 @@ import LandingPage from "./components/home/home";
 // routes
 import DashboardRoutes from "./Routes/dashboardRoutes";
 import AccountRoutes from "./Routes/accountRoutes";
-import ProtecRoute from "./Routes/protecRoute";
+import ProtectRoute from "./Routes/protecRoute";
 
 export const TokenContext = React.createContext();
 
 function App() {
   const [user, setUser] = useState(null);
 
-  const auth = getAuth();
+  // const auth = getAuth();
 
-  const refreshUser = () => {
-    onAuthStateChanged(firebaseAuth, (user) => {
-      const docRef = doc(db, "users", auth.currentUser.uid);
-      getDoc(docRef).then((res) => {
-        if (res.exists()) {
-          console.log(res.data());
-          setUser(res.data());
-        } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-        }
-      });
-    });
-  };
+  // const refreshUser = () => {
+  //   onAuthStateChanged(firebaseAuth, (user) => {
+  //     const docRef = doc(db, "users", auth.currentUser.uid);
+  //     getDoc(docRef).then((res) => {
+  //       if (res.exists()) {
+  //         console.log(res.data());
+  //         setUser(res.data());
+  //       } else {
+  //         // doc.data() will be undefined in this case
+  //         console.log("No such document!");
+  //       }
+  //     });
+  //   });
+  // };
 
-  useEffect(() => {
-    refreshUser();
-  }, []);
+  // useEffect(() => {
+  //   refreshUser();
+  // }, []);
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <BrowserRouter>
-      <TokenContext.Provider value={user}>
         <div className="app">
           {/* header section */}
           <Navigasi />
@@ -56,14 +55,13 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="account/*" element={<AccountRoutes />} />
-            <Route element={<ProtecRoute />}>
+            <Route element={<ProtectRoute />}>
               <Route path="/dashboard/*" element={<DashboardRoutes />} />
             </Route>
           </Routes>
 
           {/* footer section */}
         </div>
-      </TokenContext.Provider>
     </BrowserRouter>
   );
 }

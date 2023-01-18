@@ -2,8 +2,8 @@ import { db } from "../config/fbConfig";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { nanoid } from "nanoid";
 
-const getPapers = async () => {
-  const querySnapshot = await getDocs(collection(db, "papers"));
+const getPapers = () => {
+  const docRef = doc(db, "papers", )
   const data = [];
   querySnapshot.forEach((doc) => {
     const temp = {

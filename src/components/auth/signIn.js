@@ -7,10 +7,18 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 // custom function for DOM
 import { handlePopup, popupHidden } from "./popupHandle";
 
+// redux
+import { useDispatch } from "react-redux";
+import { USER_LOGIN } from "../../redux/slice/authSlice";
+import { GET_PAPERS } from "../../redux/slice/papersSlice";
+import { getPapers } from "../../utils/handlePaper";
+
 function SignIn() {
   const [state, setState] = useState();
   const auth = getAuth();
   const navigate = useNavigate();
+
+  const dispatch = useDispatch()
 
   //  ref DOM
   const popupDOM = useRef();
@@ -25,11 +33,18 @@ function SignIn() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(navigate);
 
     signInWithEmailAndPassword(auth, state.email, state.password)
-      .then(() => {
-        console.log("berhasil");
+      .then((response) => {
+        const dataUSER = {
+          username: response.user.displayName ,
+          email: response.user.email,
+          uid: response.user.uid
+        }
+        const dataPaper = getPapers()
+        dispatch(USER_LOGIN(dataUSER))
+        dispatch(GET_PAPERS(dataPaper))
+
         navigate("/dashboard", { replace: true });
       })
       .catch((err) => {

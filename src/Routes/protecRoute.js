@@ -1,20 +1,30 @@
-import { onAuthStateChanged } from "firebase/auth";
-import React, { useContext, useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import { firebaseAuth } from "../config/fbConfig";
+import React, { useEffect } from 'react'
+import { Outlet } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { onAuthStateChanged } from 'firebase/auth';
+import { firebaseAuth } from '../config/fbConfig';
+import { USER_LOGIN } from '../redux/slice/authSlice';
+import { GET_PAPERS } from '../redux/slice/papersSlice';
+import { getPapers } from '../utils/handlePaper';
 
-const ProtecRoute = () => {
-  const [token, setToken] = useState(undefined);
-
+// fungsi ini bertujuan untuk jika user belum memiliki akun (belum melakukan login) lalu mengakses halaman dashboard, user akan diarahkan ke menu login
+export default function ProtectRoute() {
+  const dispatch = useDispatch()
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn)
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
-      if (user) {
-        setToken(true);
-      }
-    });
-  }, [token]);
+      dispatch(USER_LOGIN({
+        email: user.email,
+        username: user.displayName,
+        uid: user.uid
+      }))
 
-  return token !== undefined ? <Outlet /> : <h1>loading</h1>;
-};
+      const papersData = getPapers()
+      dispatch(GET_PAPERS())
+    })
+  }, []);
+  console.log(isLoggedIn)
 
-export default ProtecRoute;
+  return isLoggedIn ? <Outlet /> : <h1>Loading ...</h1>
+}
+
