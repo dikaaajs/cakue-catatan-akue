@@ -18,7 +18,7 @@ function SignIn() {
   const auth = getAuth();
   const navigate = useNavigate();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   //  ref DOM
   const popupDOM = useRef();
@@ -33,22 +33,26 @@ function SignIn() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(state.email);
 
     signInWithEmailAndPassword(auth, state.email, state.password)
       .then((response) => {
         const dataUSER = {
-          username: response.user.displayName ,
+          username: "tests",
           email: response.user.email,
-          uid: response.user.uid
-        }
-        const dataPaper = getPapers()
-        dispatch(USER_LOGIN(dataUSER))
-        dispatch(GET_PAPERS(dataPaper))
+          uid: response.user.uid,
+        };
+
+        const getData = getPapers();
+
+        dispatch(USER_LOGIN(dataUSER));
+        dispatch(GET_PAPERS(dataPaper));
 
         navigate("/dashboard", { replace: true });
       })
       .catch((err) => {
         handlePopup(true, err.message, popupDOM, messageDOM);
+        console.log(err.message);
       });
   };
 

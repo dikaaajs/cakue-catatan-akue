@@ -152,15 +152,13 @@ function SignUp() {
     createUserWithEmailAndPassword(auth, state.email, state.password)
       .then(() => {
         // id succes
-        const paperID = nanoid(12)
+        const paperID = nanoid(12);
         auth.currentUser.displayName = usernameDOM.current.value;
-        const usersRef = doc(db, "users", auth.currentUser.uid);
-        const papersRef = doc(db, "papers", paperID)
 
         const usersData = {
           username: auth.currentUser.displayName,
           email: auth.currentUser.email,
-          paperID: paperID
+          paperID: paperID,
         };
 
         const papersData = {
@@ -170,12 +168,14 @@ function SignUp() {
               content:
                 "hi selamat datang di cakue. nikmatilah fitur fitur yang telah dibangun oleh saya",
               id: nanoid(12),
-              createdAt : new Date(),
-              updateAt : new Date()
+              createdAt: new Date(),
+              updateAt: new Date(),
             },
-          ]
-        }
+          ],
+        };
 
+        const usersRef = doc(db, "users", auth.currentUser.uid);
+        const papersRef = doc(db, "papers", paperID);
         setDoc(usersRef, usersData);
         setDoc(papersRef, papersData);
 
@@ -189,7 +189,6 @@ function SignUp() {
       .catch((err) => {
         handlePopup(true, err.message, popupDOM, messageDOM);
       });
-
   };
 
   return (
