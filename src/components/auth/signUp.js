@@ -146,21 +146,19 @@ function SignUp() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    createUserWithEmailAndPassword(auth, state.email, state.password)
-      .then(() => {
-        // id succes
-        const paperID = nanoid(12);
-        auth.currentUser.displayName = usernameDOM.current.value;
-
+    try {
+      const createAccount = await createUserWithEmailAndPassword(auth, state.email, state.password)
+      const paperID = nanoid(12);
         const usersData = {
           username: auth.currentUser.displayName,
           email: auth.currentUser.email,
           paperID: paperID,
         };
 
+        // initial data papers pertama
         const papersData = {
           papers: [
             {
@@ -174,6 +172,7 @@ function SignUp() {
           ],
         };
 
+        // kirim data user dan papers ke firestore
         const usersRef = doc(db, "users", auth.currentUser.uid);
         const papersRef = doc(db, "papers", paperID);
         setDoc(usersRef, usersData);
@@ -185,9 +184,19 @@ function SignUp() {
           popupDOM,
           messageDOM
         );
+      
+    } catch (error) {
+
+        handlePopup(true, err.message, popupDOM, messageDOM);
+
+    }
+    
+    createUserWithEmailAndPassword(auth, state.email, state.password)
+      .then(() => {
+        // id succes
+        
       })
       .catch((err) => {
-        handlePopup(true, err.message, popupDOM, messageDOM);
       });
   };
 
