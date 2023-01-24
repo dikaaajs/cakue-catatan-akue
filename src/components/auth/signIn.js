@@ -1,17 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
-// firebase auth
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
-// custom function for DOM
 import { handlePopup, popupHidden } from "./popupHandle";
-
-// redux
 import { useDispatch } from "react-redux";
-import { USER_LOGIN } from "../../redux/slice/authSlice";
-import { GET_PAPERS } from "../../redux/slice/papersSlice";
-import { getPapers } from "../../utils/handlePaper";
+import { SET_USER } from "../../redux/slice/authSlice";
+import { SET_PAPERS } from "../../redux/slice/papersSlice";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../config/fbConfig";
 
 function SignIn() {
   const [state, setState] = useState();
@@ -31,29 +26,35 @@ function SignIn() {
       ...newState,
     });
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(state.email);
+    let dataUser = {
+      email: "",
+      paperID: "",
+      username: "",
+    }
+    let papers = []
 
-    signInWithEmailAndPassword(auth, state.email, state.password)
-      .then((response) => {
-        const dataUSER = {
-          username: "tests",
-          email: response.user.email,
-          uid: response.user.uid,
-        };
+    try {
+      const response = await signInWithEmailAndPassword(auth, state.email, state.password)
+      // ambil data dari firestore
+      const dataRefUser = doc(db, "users", response.user.uid)
+      const queryUser = await getDoc(dataRefUser)
+      dataUser = queryUser.data()
 
-        const getData = getPapers();
+      const papersDataRef = doc(doc, "papers", dataUser.paperID)
+      const queryPapers = await getDoc(papersDataRef)
+      papers = queryPapers.data()
 
-        dispatch(USER_LOGIN(dataUSER));
-        dispatch(GET_PAPERS(dataPaper));
+      dispatch(SET_USER(dataUser));
+      dispatch(SET_PAPERS(papers));
+      navigate("/dashboard");
 
-        navigate("/dashboard", { replace: true });
-      })
-      .catch((err) => {
-        handlePopup(true, err.message, popupDOM, messageDOM);
-        console.log(err.message);
-      });
+    } catch (err) {
+      handlePopup(true, err.message, popupDOM, messageDOM);
+      console.log(err.message);
+    }
   };
 
   return (

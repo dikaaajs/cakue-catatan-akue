@@ -5,7 +5,6 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { handlePopup, popupHidden } from "./popupHandle";
 import { db } from "../../config/fbConfig";
-import { async } from "@firebase/util";
 import { nanoid } from "nanoid";
 
 // main content
@@ -17,8 +16,6 @@ function SignUp() {
     password: "",
   });
   const auth = getAuth();
-  const username = useRef();
-  const password = useRef();
 
   // ref DOM
   const usernameDOM = useRef();
@@ -150,54 +147,44 @@ function SignUp() {
     e.preventDefault();
 
     try {
-      const createAccount = await createUserWithEmailAndPassword(auth, state.email, state.password)
+      await createUserWithEmailAndPassword(auth, state.email, state.password)
       const paperID = nanoid(12);
-        const usersData = {
-          username: auth.currentUser.displayName,
-          email: auth.currentUser.email,
-          paperID: paperID,
-        };
+      const usersData = {
+        username: auth.currentUser.displayName,
+        email: auth.currentUser.email,
+        paperID: paperID,
+      };
 
-        // initial data papers pertama
-        const papersData = {
-          papers: [
-            {
-              judul: "initial paper",
-              content:
-                "hi selamat datang di cakue. nikmatilah fitur fitur yang telah dibangun oleh saya",
-              id: nanoid(12),
-              createdAt: new Date(),
-              updateAt: new Date(),
-            },
-          ],
-        };
+      // initial data papers pertama
+      const papersData = {
+        papers: [
+          {
+            judul: "initial paper",
+            content:
+              "hi selamat datang di cakue. nikmatilah fitur fitur yang telah dibangun oleh saya",
+            id: nanoid(12),
+            createdAt: new Date(),
+            updateAt: new Date(),
+          },
+        ],
+      };
 
-        // kirim data user dan papers ke firestore
-        const usersRef = doc(db, "users", auth.currentUser.uid);
-        const papersRef = doc(db, "papers", paperID);
-        setDoc(usersRef, usersData);
-        setDoc(papersRef, papersData);
+      // kirim data user dan papers ke firestore
+      const usersRef = doc(db, "users", auth.currentUser.uid);
+      const papersRef = doc(db, "papers", paperID);
+      setDoc(usersRef, usersData);
+      setDoc(papersRef, papersData);
 
-        handlePopup(
-          false,
-          "berhasil membuat akun, silahkan login !",
-          popupDOM,
-          messageDOM
-        );
-      
-    } catch (error) {
+      handlePopup(
+        false,
+        "berhasil membuat akun, silahkan login !",
+        popupDOM,
+        messageDOM
+      );
 
-        handlePopup(true, err.message, popupDOM, messageDOM);
-
+    } catch (err) {
+      handlePopup(true, err.message, popupDOM, messageDOM);
     }
-    
-    createUserWithEmailAndPassword(auth, state.email, state.password)
-      .then(() => {
-        // id succes
-        
-      })
-      .catch((err) => {
-      });
   };
 
   return (

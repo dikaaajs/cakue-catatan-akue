@@ -1,18 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { getPapers } from "../../../utils/handlePaper";
+import React from "react";
+import { useSelector } from "react-redux";
 
 const Log = () => {
-  const [dataLogs, setLogs] = useState([]);
+  const dataLogs = useSelector((state) => state.papers);
 
-  useEffect(() => {
-    getPapers()
-      .then((response) => {
-        setLogs(response);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [dataLogs]);
+  console.log(dataLogs)
 
   const componentLogs = dataLogs.map((dataLog) => {
     return (
