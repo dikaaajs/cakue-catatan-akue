@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { ReactComponent as LogoFilter } from "../../../svg/filter.svg";
 
 class SearchSection extends Component {
@@ -13,8 +14,18 @@ class SearchSection extends Component {
           />
         </div>
 
+        {/* ascending and create paper section */}
         <div className="ascending-section">
-          <div className="filter-1">
+          <div className="create-paper w-1/2">
+            <Link
+              className="button-create-paper text-[0.6rem] py-[5px] px-[8px] rounded-[3px] bg-white"
+              to="paper/create"
+            >
+              buat +
+            </Link>
+          </div>
+
+          <div className="filter-1 w-1/3">
             <div>
               <ul className="flex text-[0.6rem] gap-[0.5rem] py-[5px] px-[8px] bg-white w-fit">
                 <li>

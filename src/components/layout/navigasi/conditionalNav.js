@@ -1,25 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-import { handleLogOut } from "../../../utils/handleAccount";
-import { storage } from "../../../config/fbConfig";
-import { ref, getDownloadURL } from "firebase/storage";
-
-// context
-import { TokenContext } from "../../../App";
+import { SET_USER_NULL } from "../../../redux/slice/authSlice";
 
 const NavAfterLogin = () => {
-  // const [PP, setPP] = useState("");
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const PPRef = ref(storage, "pp/texas.jpg");
-  //   getDownloadURL(PPRef)
-  //     .then((url) => {
-  //       setPP(url);
-  //     })
-  //     .catch((e) => {
-  //       console.log(e.message);
-  //     });
-  // }, [PP]);
+  const handleLogOut = () => {
+    dispatch(SET_USER_NULL());
+  };
 
   return (
     <div className="h-fit w-1/4">
@@ -31,14 +20,6 @@ const NavAfterLogin = () => {
         </Link>
         <Link to="/" className="p-[10px] rounded-[50%] text-[1rem] w-1/5">
           <img src="" alt="" />
-        </Link>
-        <Link
-          to="/dashboard/paper/create"
-          className="fixed bottom-10 right-4 z-10"
-        >
-          <span className="py-[18px] px-[15px] shadow-lg rounded-[10px] border-[2px] border-slate-800 border-solid text-[1rem] text-black translate-y-[-0.2rem] hover:translate-y-[-0.4rem] block bg-white duration-150 z-[20]">
-            paper +
-          </span>
         </Link>
       </div>
     </div>
@@ -60,4 +41,4 @@ const NavBeforeLogin = () => {
   );
 };
 
-export {NavAfterLogin, NavBeforeLogin}
+export { NavAfterLogin, NavBeforeLogin };

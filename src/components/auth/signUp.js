@@ -147,15 +147,18 @@ function SignUp() {
     e.preventDefault();
 
     try {
-      await createUserWithEmailAndPassword(auth, state.email, state.password)
+      await createUserWithEmailAndPassword(auth, state.email, state.password);
       const paperID = nanoid(12);
       const usersData = {
-        username: auth.currentUser.displayName,
-        email: auth.currentUser.email,
+        username: state.displayName,
+        email: state.email,
         paperID: paperID,
       };
 
       // initial data papers pertama
+      const timeNow = new Date();
+      const formatTimeNow = timeNow.toLocaleDateString();
+      console.log(formatTimeNow);
       const papersData = {
         papers: [
           {
@@ -163,12 +166,13 @@ function SignUp() {
             content:
               "hi selamat datang di cakue. nikmatilah fitur fitur yang telah dibangun oleh saya",
             id: nanoid(12),
-            createdAt: new Date(),
-            updateAt: new Date(),
+            createdAt: formatTimeNow,
+            updateAt: formatTimeNow,
           },
         ],
       };
 
+      console.log(usersData);
       // kirim data user dan papers ke firestore
       const usersRef = doc(db, "users", auth.currentUser.uid);
       const papersRef = doc(db, "papers", paperID);
@@ -181,7 +185,6 @@ function SignUp() {
         popupDOM,
         messageDOM
       );
-
     } catch (err) {
       handlePopup(true, err.message, popupDOM, messageDOM);
     }

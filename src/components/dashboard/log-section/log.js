@@ -2,16 +2,14 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const Log = () => {
-  const dataLogs = useSelector((state) => state.papers);
+  const dataLogs = useSelector((state) => state.papers.papers);
 
-  console.log(dataLogs)
-
-  const componentLogs = dataLogs.map((dataLog) => {
+  const componentLogs = dataLogs.papers.map((dataLog) => {
     return (
       <div className="card-log" key={dataLog.id}>
         <p className="paragraf font-[400]">
           membuat catatan{" "}
-          <span className="text-red-600 font-[600]">"{dataLog.header}"</span>
+          <span className="text-red-600 font-[600]">{dataLog.judul}</span>
         </p>
         <p>{dataLog.updateAt}</p>
       </div>

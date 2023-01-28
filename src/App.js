@@ -21,47 +21,23 @@ export const TokenContext = React.createContext();
 
 function App() {
   const [user, setUser] = useState(null);
-
-  // const auth = getAuth();
-
-  // const refreshUser = () => {
-  //   onAuthStateChanged(firebaseAuth, (user) => {
-  //     const docRef = doc(db, "users", auth.currentUser.uid);
-  //     getDoc(docRef).then((res) => {
-  //       if (res.exists()) {
-  //         console.log(res.data());
-  //         setUser(res.data());
-  //       } else {
-  //         // doc.data() will be undefined in this case
-  //         console.log("No such document!");
-  //       }
-  //     });
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   refreshUser();
-  // }, []);
-
-  // console.log(user);
-
   return (
     <BrowserRouter>
-        <div className="app">
-          {/* header section */}
-          <Navigasi />
+      <div className="app">
+        {/* header section */}
+        <Navigasi />
 
-          {/* main section */}
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="account/*" element={<AccountRoutes />} />
-            <Route element={<ProtectRoute />}>
-              <Route path="/dashboard/*" element={<DashboardRoutes />} />
-            </Route>
-          </Routes>
+        {/* main section */}
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="account/*" element={<AccountRoutes />} />
+          <Route element={<ProtectRoute />}>
+            <Route path="/dashboard/*" element={<DashboardRoutes />} />
+          </Route>
+        </Routes>
 
-          {/* footer section */}
-        </div>
+        {/* footer section */}
+      </div>
     </BrowserRouter>
   );
 }

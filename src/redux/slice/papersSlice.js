@@ -1,19 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    papers: []
-
-}
+  papers: [],
+};
 
 const paperSlice = createSlice({
-    name: "papers",
-    initialState,
-    reducers: {
-        SET_PAPERS: (state, action) => {
-            state.papers = action.payload
-        }
-    }
-})
+  name: "papers",
+  initialState,
+  reducers: {
+    SET_PAPERS: (state, action) => {
+      state.papers = action.payload;
+    },
+  },
+});
 
-export const { SET_PAPERS } = paperSlice.actions
-export default paperSlice.reducer
+export const { SET_PAPERS } = paperSlice.actions;
+export default paperSlice.reducer;

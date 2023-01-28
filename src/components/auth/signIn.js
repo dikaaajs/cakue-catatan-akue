@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { handlePopup, popupHidden } from "./popupHandle";
 import { useDispatch } from "react-redux";
@@ -12,12 +12,17 @@ function SignIn() {
   const [state, setState] = useState();
   const auth = getAuth();
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
-
-  //  ref DOM
   const popupDOM = useRef();
   const messageDOM = useRef();
+  const location = useLocation();
+
+  useEffect(() => {
+    const warningMessage = location?.state?.message;
+    if (warningMessage) {
+      handlePopup(true, warningMessage, popupDOM, messageDOM);
+    }
+  }, []);
 
   const handleChange = (e) => {
     const newState = { [e.target.name]: e.target.value };
@@ -33,24 +38,29 @@ function SignIn() {
       email: "",
       paperID: "",
       username: "",
-    }
-    let papers = []
+    };
+    let papers = [];
 
     try {
-      const response = await signInWithEmailAndPassword(auth, state.email, state.password)
+      const response = await signInWithEmailAndPassword(
+        auth,
+        state.email,
+        state.password
+      );
       // ambil data dari firestore
-      const dataRefUser = doc(db, "users", response.user.uid)
-      const queryUser = await getDoc(dataRefUser)
-      dataUser = queryUser.data()
+      const dataRefUser = doc(db, "users", response.user.uid);
+      const queryUser = await getDoc(dataRefUser);
+      dataUser = queryUser.data();
+      console.log(dataUser);
 
-      const papersDataRef = doc(doc, "papers", dataUser.paperID)
-      const queryPapers = await getDoc(papersDataRef)
-      papers = queryPapers.data()
+      const papersDataRef = doc(db, "papers", dataUser.paperID);
+      const queryPapers = await getDoc(papersDataRef);
+      papers = queryPapers.data();
 
       dispatch(SET_USER(dataUser));
       dispatch(SET_PAPERS(papers));
-      navigate("/dashboard");
 
+      navigate("/dashboard");
     } catch (err) {
       handlePopup(true, err.message, popupDOM, messageDOM);
       console.log(err.message);
