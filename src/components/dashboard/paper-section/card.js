@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const PaperCard = () => {
-  const dataPapers = useSelector((state) => state.papers.papers);
+  let papers = useSelector((state) => state.papers.papers.papers);
   const navigate = useNavigate();
 
   // handle event
@@ -12,9 +12,11 @@ const PaperCard = () => {
     navigate(`paper/${idPaper}`);
   };
 
-  let loop;
-  if (dataPapers) {
-    loop = dataPapers.papers.map((paper) => {
+  let cards;
+  if (papers) {
+    console.log(papers)
+    let newPaper = papers.slice().reverse()
+    cards = newPaper.map((paper) => {
       return (
         <div
           className="card-note cursor-pointer z-10"
@@ -36,10 +38,10 @@ const PaperCard = () => {
       );
     });
   } else {
-    loop = <h1>kamu belum membuat paper</h1>;
+    cards = <h1>kamu belum membuat paper</h1>;
   }
 
-  return <>{loop}</>;
+  return <>{cards}</>;
 };
 
 export default PaperCard;

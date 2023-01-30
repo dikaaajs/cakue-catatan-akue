@@ -158,7 +158,7 @@ function SignUp() {
       // initial data papers pertama
       const timeNow = new Date();
       const formatTimeNow = timeNow.toLocaleDateString();
-      console.log(formatTimeNow);
+
       const papersData = {
         papers: [
           {
@@ -172,7 +172,6 @@ function SignUp() {
         ],
       };
 
-      console.log(usersData);
       // kirim data user dan papers ke firestore
       const usersRef = doc(db, "users", auth.currentUser.uid);
       const papersRef = doc(db, "papers", paperID);

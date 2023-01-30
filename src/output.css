@@ -592,6 +592,11 @@ video {
   margin-right: auto;
 }
 
+.my-\[50px\] {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
 .mr-\[10px\] {
   margin-right: 10px;
 }
@@ -618,16 +623,25 @@ video {
   height: fit-content;
 }
 
+.h-\[3rem\] {
+  height: 3rem;
+}
+
 .h-auto {
   height: auto;
 }
 
-.h-\[2rem\] {
-  height: 2rem;
+.h-max {
+  height: -webkit-max-content;
+  height: max-content;
 }
 
-.h-\[3rem\] {
-  height: 3rem;
+.h-\[90\%\] {
+  height: 90%;
+}
+
+.min-h-screen {
+  min-height: 100vh;
 }
 
 .w-full {
@@ -686,10 +700,6 @@ video {
 
 .cursor-not-allowed {
   cursor: not-allowed;
-}
-
-.resize-none {
-  resize: none;
 }
 
 .flex-col {
@@ -781,14 +791,14 @@ video {
   background-color: rgb(237 241 245 / var(--tw-bg-opacity));
 }
 
-.bg-slate-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(30 41 59 / var(--tw-bg-opacity));
-}
-
 .bg-black {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
+
+.bg-slate-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity));
 }
 
 .bg-cover {
@@ -842,6 +852,31 @@ video {
 .py-\[10px\] {
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+.px-\[20\%\] {
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+.px-\[10\%\] {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.px-\[5\%\] {
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.py-\[50px\] {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.py-\[50p\] {
+  padding-top: 50p;
+  padding-bottom: 50p;
 }
 
 .pt-\[50px\] {

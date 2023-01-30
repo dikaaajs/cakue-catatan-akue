@@ -1,16 +1,15 @@
-import { doc, setDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { nanoid } from "nanoid";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../../config/fbConfig";
-import { addPaper } from "../../../utils/handlePaper";
+import NavbarPaper from "./navbarPaper";
 
 const CreatePaper = () => {
   const idPapers = useSelector((state) => state.auth.paperID);
   const [state, setState] = useState({});
   const navigate = useNavigate();
-
-  console.log(idPapers);
 
   // event handler
   const handleChange = (e) => {
@@ -27,18 +26,39 @@ const CreatePaper = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const createdAt = new Date();
-    const updateAt = new Date();
+    const formatTimeNow = new Date().toISOString().split("T")[0]
+
+    const paper = {
+      judul: state.judul,
+      content: state.content,
+      id: nanoid(12),
+      createdAt: formatTimeNow,
+      updateAt: formatTimeNow
+    }
 
     const papersDataRef = doc(db, "papers", idPapers);
-    setDoc(papersDataRef, state);
+    const updatePaper = async () => {
+      try {
+        updateDoc(papersDataRef, {
+          papers: arrayUnion(paper)
+        })
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
+
+    updatePaper()
+
     navigate("/dashboard", { state: { message: "berhasil menambahkan data" } });
   };
 
   return (
-    <div className="bg-[#edf1f5] w-full h-screen pt-[50px]">
-      <div className="w-[90%] md:w-[80%] lg:w-[80%] bg-white mx-auto h-full py-[100px]">
+    <div className="bg-[#edf1f5] w-full h-fit min-h-screen py-[50px]">
+      <div className="w-[90%] md:w-[80%] lg:w-[80%] bg-white mx-auto h-fit min-h-screen py-[50px]">
+
+
         <form onSubmit={handleSubmit} className="w-[80%] mx-auto flex flex-col">
+          <NavbarPaper page="create" link="paper/create" />
           {/* judul */}
           <div>
             <textarea

@@ -18,6 +18,7 @@ export default function ProtectRoute() {
       console.log("use effect berjalan di protect route");
       if (user) {
         console.log("akun terdeteksi");
+        console.log(user)
 
         // ambil data dari firestore
         getData(user.uid)

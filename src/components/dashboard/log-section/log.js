@@ -4,7 +4,9 @@ import { useSelector } from "react-redux";
 const Log = () => {
   const dataLogs = useSelector((state) => state.papers.papers);
 
-  const componentLogs = dataLogs.papers.map((dataLog) => {
+  // ascending log by timeStamp
+  const papers = dataLogs.papers.slice().reverse()
+  const componentLogs = papers.map((dataLog) => {
     return (
       <div className="card-log" key={dataLog.id}>
         <p className="paragraf font-[400]">
