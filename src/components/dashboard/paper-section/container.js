@@ -8,7 +8,6 @@ const ContainerPaper = () => {
     <div className="container-note">
       {/* search section */}
       <SearchSection />
-
       {/* cards section */}
       <PaperCard />
     </div>
