@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // component
 import ContainerPaper from "./paper-section/container";
 import Log from "./log-section/logs";

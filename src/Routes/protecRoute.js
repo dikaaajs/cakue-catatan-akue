@@ -15,11 +15,7 @@ export default function ProtectRoute() {
 
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
-      console.log("use effect berjalan di protect route");
       if (user) {
-        console.log("akun terdeteksi");
-        console.log(user)
-
         // ambil data dari firestore
         getData(user.uid)
           .then((response) => {

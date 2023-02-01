@@ -156,8 +156,7 @@ function SignUp() {
       };
 
       // initial data papers pertama
-      const timeNow = new Date();
-      const formatTimeNow = timeNow.toLocaleDateString();
+      const formatTimeNow = new Date().toISOString().split("T")[0];
 
       const papersData = {
         papers: [
