@@ -1,15 +1,17 @@
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { nanoid } from "nanoid";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../../config/fbConfig";
+import { UPDATE_PAPERS } from "../../../redux/slice/papersSlice";
 import NavbarPaper from "./navbarPaper";
 
 const CreatePaper = () => {
   const idPapers = useSelector((state) => state.auth.paperID);
   const [state, setState] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // event handler
   const handleChange = (e) => {
@@ -26,37 +28,37 @@ const CreatePaper = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formatTimeNow = new Date().toISOString().split("T")[0]
+    const formatTimeNow = new Date().toISOString().split("T")[0];
 
     const paper = {
       judul: state.judul,
       content: state.content,
       id: nanoid(12),
       createdAt: formatTimeNow,
-      updateAt: formatTimeNow
-    }
+      updateAt: formatTimeNow,
+    };
 
     const papersDataRef = doc(db, "papers", idPapers);
     const updatePaper = async () => {
       try {
         updateDoc(papersDataRef, {
-          papers: arrayUnion(paper)
-        })
+          papers: arrayUnion(paper),
+        });
+        dispatch(UPDATE_PAPERS(paper));
+        navigate("/dashboard", {
+          state: { message: "berhasil menambahkan data", replace: true },
+        });
       } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
       }
-    }
+    };
 
-    updatePaper()
-
-    navigate("/dashboard", { state: { message: "berhasil menambahkan data" } });
+    updatePaper();
   };
 
   return (
     <div className="bg-[#edf1f5] w-full h-fit min-h-screen py-[50px]">
       <div className="w-[90%] md:w-[80%] lg:w-[80%] bg-white mx-auto h-fit min-h-screen py-[50px]">
-
-
         <form onSubmit={handleSubmit} className="w-[80%] mx-auto flex flex-col">
           <NavbarPaper page="create" link="paper/create" />
           {/* judul */}

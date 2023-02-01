@@ -11,8 +11,14 @@ const paperSlice = createSlice({
     SET_PAPERS: (state, action) => {
       state.papers = action.payload;
     },
+    UPDATE_PAPERS: (state, action) => {
+      return {
+        ...state,
+        papers: [action.payload, ...state.papers],
+      };
+    },
   },
 });
 
-export const { SET_PAPERS } = paperSlice.actions;
+export const { SET_PAPERS, UPDATE_PAPERS } = paperSlice.actions;
 export default paperSlice.reducer;
