@@ -1,7 +1,7 @@
 // component
 import React from "react";
-import PaperCard from "./card";
-import SearchSection from "./search";
+import PaperCard from "./view/card";
+import SearchSection from "./layout/search";
 
 const ContainerPaper = () => {
   return (

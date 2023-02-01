@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import NavbarPaper from "./navbarPaper";
+import NavbarPaper from "../layout/navbarPaper";
 
 const Paper = () => {
   const { id } = useParams();

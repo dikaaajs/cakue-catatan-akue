@@ -3,8 +3,8 @@ import { Route, Routes } from "react-router-dom";
 
 // component
 import Dashboard from "../components/dashboard/dashboard";
-import CreatePaper from "../components/dashboard/paper-section/create";
-import Paper from "../components/dashboard/paper-section/paper";
+import CreatePaper from "../components/dashboard/paper-section/manage/create";
+import Paper from "../components/dashboard/paper-section/view/paper";
 
 const DashboardRoutes = () => {
   return (

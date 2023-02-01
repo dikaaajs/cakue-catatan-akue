@@ -1,17 +1,15 @@
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { nanoid } from "nanoid";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../../config/fbConfig";
-import { UPDATE_PAPERS } from "../../../redux/slice/papersSlice";
-import NavbarPaper from "./navbarPaper";
+import { db } from "../../../../config/fbConfig";
+import NavbarPaper from "../layout/navbarPaper";
 
 const CreatePaper = () => {
   const idPapers = useSelector((state) => state.auth.paperID);
   const [state, setState] = useState({});
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   // event handler
   const handleChange = (e) => {
@@ -28,8 +26,8 @@ const CreatePaper = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formatTimeNow = new Date().toISOString().split("T")[0];
 
+    const formatTimeNow = new Date().toISOString().split("T")[0];
     const paper = {
       judul: state.judul,
       content: state.content,
@@ -38,15 +36,16 @@ const CreatePaper = () => {
       updateAt: formatTimeNow,
     };
 
+    // push data to firestore and redux
     const papersDataRef = doc(db, "papers", idPapers);
+
     const updatePaper = async () => {
       try {
         updateDoc(papersDataRef, {
           papers: arrayUnion(paper),
         });
-        dispatch(UPDATE_PAPERS(paper));
         navigate("/dashboard", {
-          state: { message: "berhasil menambahkan data", replace: true },
+          state: { message: "berhasil menambahkan data", refreshData: true },
         });
       } catch (error) {
         console.log(error.message);

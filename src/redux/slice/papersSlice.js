@@ -12,10 +12,8 @@ const paperSlice = createSlice({
       state.papers = action.payload;
     },
     UPDATE_PAPERS: (state, action) => {
-      return {
-        ...state,
-        papers: [action.payload, ...state.papers],
-      };
+      const objectNew = action.payload
+      return { ...state, objectNew }
     },
   },
 });

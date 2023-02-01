@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../config/fbConfig";
@@ -13,7 +13,7 @@ export default function ProtectRoute() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const setData = () => {
     onAuthStateChanged(firebaseAuth, (user) => {
       if (user) {
         // ambil data dari firestore
@@ -36,6 +36,17 @@ export default function ProtectRoute() {
         });
       }
     });
+  }
+
+  // refresh data after making changes
+  const location = useLocation()
+  if (location.state?.refreshData === true) {
+    setData()
+  }
+
+  useEffect(() => {
+    setData()
+    // eslint-disable-next-line
   }, []);
 
   return isLoggedIn ? <Outlet /> : <h1>Loading ...</h1>;

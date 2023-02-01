@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { ReactComponent as LogoFilter } from "../../../svg/filter.svg";
+import { ReactComponent as LogoFilter } from "../../../../svg/filter.svg";
 
 class SearchSection extends Component {
   render() {
