@@ -11,10 +11,6 @@ const paperSlice = createSlice({
     SET_PAPERS: (state, action) => {
       state.papers = action.payload;
     },
-    UPDATE_PAPERS: (state, action) => {
-      const objectNew = action.payload
-      return { ...state, objectNew }
-    },
   },
 });
 

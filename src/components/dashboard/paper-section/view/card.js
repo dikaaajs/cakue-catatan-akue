@@ -8,12 +8,12 @@ const PaperCard = () => {
   const [index, setIndex] = useState(0);
 
   // block array per 6 data
-  let arrayPapers = []
-  papers.map(i => {
-    let fivePapers = []
-    console.log(i)
-  })
-
+  const chunkSize = 6;
+  const chunks = [];
+  for (let i = 0; i < papers.length; i += chunkSize) {
+    console.log(`${i} ${i + chunkSize}`);
+    chunks.push(papers.slice(i, i + chunkSize));
+  }
 
   // handle event
   const handleClick = (e) => {
@@ -22,15 +22,28 @@ const PaperCard = () => {
   };
 
   const moreOption = (e) => {
-    e.currentTarget.nextSibling.classList.toggle("hidden")
-  }
+    e.currentTarget.nextSibling.classList.toggle("hidden");
+  };
 
+  const handleNext = () => {
+    setIndex(index + 1);
+  };
+
+  const handlePrev = () => {
+    setIndex(index - 1);
+  };
+
+  const handleButtonNav = (index) => {
+    setIndex(index);
+  };
+
+  // loop for card
   let cards;
   if (papers) {
-    let newPaper = papers.slice().reverse()
+    let newPaper = chunks[index].slice().reverse();
     cards = newPaper.map((paper) => {
       return (
-        <div key={paper.id} className="relative" >
+        <div key={paper.id} className="relative">
           {/* card section */}
           <div
             className="card-note cursor-pointer z-10"
@@ -54,7 +67,6 @@ const PaperCard = () => {
           <button
             className="absolute right-2 top-2 z-10"
             onClick={(e) => moreOption(e)}
-
           >
             <span className="material-symbols-outlined">more_vert</span>
           </button>
@@ -62,9 +74,15 @@ const PaperCard = () => {
           {/* popup more option */}
           <div className="absolute bg-white md:w-[10%] w-[20%] text-center z-20 top-2 right-10 py-[10px] rounded-[5px] text-[.7rem] shadow-md hidden">
             <ul className="flex flex-col gap-1">
-              <li><Link>view</Link></li>
-              <li><Link>edit</Link></li>
-              <li className="text-red-500"><Link>delete</Link></li>
+              <li>
+                <Link>view</Link>
+              </li>
+              <li>
+                <Link>edit</Link>
+              </li>
+              <li className="text-red-500">
+                <Link>delete</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -74,7 +92,63 @@ const PaperCard = () => {
     cards = <h1>kamu belum membuat paper</h1>;
   }
 
-  return <>{cards}</>;
+  // loop for button
+  let buttonTotal = [];
+  for (let i = 0; i <= chunks.length - 1; i++) {
+    buttonTotal.push(i);
+  }
+
+  let buttonNav = buttonTotal.map((i) => {
+    // just render 3 button
+    if (i === index || i === index - 1 || i === index + 1) {
+      let isActive = false;
+      if (i === index) {
+        isActive = true;
+      }
+
+      const status = isActive ? "active-filter-button" : "isNotActive";
+      return (
+        <div
+          className={`w-10 h-10 bg-white rounded-full flex justify-center items-center ${status}`}
+          onClick={() => handleButtonNav(i)}
+          key={i}
+        >
+          <p className="align-middle h-fit">{i + 1}</p>
+        </div>
+      );
+    }
+  });
+
+  return (
+    <div>
+      <div className="flex flex-col gap-[20px]">{cards}</div>
+      <div className="my-[40px]">
+        <div className="flex gap-2 justify-center">
+          {/* prev button */}
+          {index !== 0 && (
+            <div
+              className="w-10 h-10 bg-white rounded-full flex justify-center items-center"
+              onClick={handlePrev}
+            >
+              <p className="align-middle h-fit">{"<"}</p>
+            </div>
+          )}
+
+          {buttonNav}
+
+          {/* next button */}
+          {index < chunks.length - 1 && (
+            <div
+              className="w-10 h-10 bg-white rounded-full flex justify-center items-center"
+              onClick={handleNext}
+            >
+              <p className="align-middle h-fit">{">"}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default PaperCard;
