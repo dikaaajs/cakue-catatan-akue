@@ -3,17 +3,27 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 const PaperCard = () => {
-  let papers = useSelector((state) => state.papers.papers.papers);
+  const papers = useSelector((state) => state.papers.papers.papers);
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
 
   // block array per 6 data
+  let formatPaper = []
+  formatPaper.push(...papers)
+  formatPaper.reverse()
+
+  console.log(formatPaper)
+  console.log(papers)
+
+
   const chunkSize = 6;
   const chunks = [];
   for (let i = 0; i < papers.length; i += chunkSize) {
-    console.log(`${i} ${i + chunkSize}`);
-    chunks.push(papers.slice(i, i + chunkSize));
+    chunks.push(formatPaper.slice(i, i + chunkSize));
   }
+
+
+
 
   // handle event
   const handleClick = (e) => {
@@ -40,7 +50,7 @@ const PaperCard = () => {
   // loop for card
   let cards;
   if (papers) {
-    let newPaper = chunks[index].slice().reverse();
+    let newPaper = chunks[index];
     cards = newPaper.map((paper) => {
       return (
         <div key={paper.id} className="relative">
@@ -99,24 +109,29 @@ const PaperCard = () => {
   }
 
   let buttonNav = buttonTotal.map((i) => {
-    // just render 3 button
+    let isActive;
+
     if (i === index || i === index - 1 || i === index + 1) {
-      let isActive = false;
+      isActive = false;
       if (i === index) {
         isActive = true;
       }
-
-      const status = isActive ? "active-filter-button" : "isNotActive";
-      return (
-        <div
-          className={`w-10 h-10 bg-white rounded-full flex justify-center items-center ${status}`}
-          onClick={() => handleButtonNav(i)}
-          key={i}
-        >
-          <p className="align-middle h-fit">{i + 1}</p>
-        </div>
-      );
+    } else {
+      return
     }
+
+    const status = isActive ? "active-filter-button" : "isNotActive";
+    return (
+      <div
+        className={`w-10 h-10 bg-white rounded-full flex justify-center items-center ${status}`}
+        onClick={() => handleButtonNav(i)}
+        key={i}
+      >
+        <p className="align-middle h-fit">{i + 1}</p>
+      </div>
+    );
+
+    // // eslint-disable-next-line
   });
 
   return (
