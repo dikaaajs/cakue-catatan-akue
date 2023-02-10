@@ -6,6 +6,7 @@ import { firebaseAuth } from "../config/fbConfig";
 import { SET_USER, SET_USER_NULL } from "../redux/slice/authSlice";
 import { getData } from "../utils/handleAccount";
 import { SET_PAPERS } from "../redux/slice/papersSlice";
+const SET_DATA_CONTEXT = React.createContext();
 
 // fungsi ini bertujuan untuk jika user belum memiliki akun (belum melakukan login) lalu mengakses halaman dashboard, user akan diarahkan ke menu login
 export default function ProtectRoute() {
@@ -36,18 +37,26 @@ export default function ProtectRoute() {
         });
       }
     });
-  }
+  };
 
   // refresh data after making changes
-  const location = useLocation()
+  const location = useLocation();
   if (location.state?.refreshData === true) {
-    setData()
+    setData();
   }
 
   useEffect(() => {
-    setData()
+    setData();
     // eslint-disable-next-line
   }, []);
 
-  return isLoggedIn ? <Outlet /> : <h1>Loading ...</h1>;
+  return isLoggedIn ? (
+    <SET_DATA_CONTEXT.Provider value={setData}>
+      <Outlet />
+    </SET_DATA_CONTEXT.Provider>
+  ) : (
+    <h1>Loading ...</h1>
+  );
 }
+
+export { SET_DATA_CONTEXT };

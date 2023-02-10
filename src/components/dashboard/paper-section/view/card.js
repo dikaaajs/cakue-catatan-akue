@@ -1,29 +1,31 @@
-import React, { useState } from "react";
+import { arrayRemove, doc, updateDoc } from "firebase/firestore";
+import React, { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { db } from "../../../../config/fbConfig";
+import { SET_DATA_CONTEXT } from "../../../../Routes/protecRoute";
 
 const PaperCard = () => {
+  const set_data = useContext(SET_DATA_CONTEXT);
+  console.log(set_data);
   const papers = useSelector((state) => state.papers.papers.papers);
+  const idPapers = useSelector((state) => state.auth.paperID);
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
 
   // block array per 6 data
-  let formatPaper = []
-  formatPaper.push(...papers)
-  formatPaper.reverse()
+  let formatPaper = [];
+  formatPaper.push(...papers);
+  formatPaper.reverse();
 
-  console.log(formatPaper)
-  console.log(papers)
-
+  console.log(formatPaper);
+  console.log(papers);
 
   const chunkSize = 6;
   const chunks = [];
   for (let i = 0; i < papers.length; i += chunkSize) {
     chunks.push(formatPaper.slice(i, i + chunkSize));
   }
-
-
-
 
   // handle event
   const handleClick = (e) => {
@@ -33,6 +35,18 @@ const PaperCard = () => {
 
   const moreOption = (e) => {
     e.currentTarget.nextSibling.classList.toggle("hidden");
+  };
+
+  const handleDelete = async (paper) => {
+    const docRef = doc(db, "papers", idPapers);
+    updateDoc(docRef, {
+      papers: arrayRemove(paper),
+    })
+      .then(() => {
+        // pengen manggil setData() disini
+        set_data();
+      })
+      .catch((e) => console.log(e.message));
   };
 
   const handleNext = () => {
@@ -91,7 +105,7 @@ const PaperCard = () => {
                 <Link>edit</Link>
               </li>
               <li className="text-red-500">
-                <Link>delete</Link>
+                <button onClick={() => handleDelete(paper)}>delete</button>
               </li>
             </ul>
           </div>
@@ -108,31 +122,26 @@ const PaperCard = () => {
     buttonTotal.push(i);
   }
 
-  let buttonNav = buttonTotal.map((i) => {
-    let isActive;
-
-    if (i === index || i === index - 1 || i === index + 1) {
-      isActive = false;
+  let buttonNav = buttonTotal
+    .filter((i) => i === index || i === index - 1 || i === index + 1)
+    .map((i) => {
+      let isActive = false;
       if (i === index) {
         isActive = true;
       }
-    } else {
-      return
-    }
 
-    const status = isActive ? "active-filter-button" : "isNotActive";
-    return (
-      <div
-        className={`w-10 h-10 bg-white rounded-full flex justify-center items-center ${status}`}
-        onClick={() => handleButtonNav(i)}
-        key={i}
-      >
-        <p className="align-middle h-fit">{i + 1}</p>
-      </div>
-    );
-
-    // // eslint-disable-next-line
-  });
+      const status = isActive ? "active-filter-button" : "isNotActive";
+      const component = (
+        <div
+          className={`w-10 h-10 bg-white rounded-full flex justify-center items-center ${status}`}
+          onClick={() => handleButtonNav(i)}
+          key={i}
+        >
+          <p className="align-middle h-fit">{i + 1}</p>
+        </div>
+      );
+      return component;
+    });
 
   return (
     <div>
