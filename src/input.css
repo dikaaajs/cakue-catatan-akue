@@ -6,6 +6,7 @@
 * {
     @apply font-poppins
 }
+
 .paragraf {
     @apply font-roboto font-[300]
 }
@@ -75,12 +76,11 @@
 }
 
 .container-label-account {
-    @apply w-[80%] block mx-auto flex flex-col
+    @apply w-[80%] mx-auto flex flex-col
 }
 
 .input-account {
     @apply border-[1px] border-opacity-60 border-gray-900 border-solid w-full h-[1rem] rounded-[3px] text-[0.5rem] outline-none
-
 }
 
 .submit-btn {
@@ -91,4 +91,3 @@
 .input-note {
     @apply focus:outline-none
 }
-

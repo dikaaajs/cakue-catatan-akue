@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import authSlice from "./slice/authSlice";
+import filterSlice from "./slice/filterSlice";
 import papersSlice from "./slice/papersSlice";
 
 const rootReducer = combineReducers({
     auth: authSlice,
-    papers: papersSlice
+    papers: papersSlice,
+    filter: filterSlice
 })
 
 const store = configureStore({
